@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Results</title>
+</head>
+<h1>Database Storage</h1>
+<body>
+    <script>
+    async function getData() {
+    const response = await fetch("/api");
+    const data = await response.json();
+
+    // Check if the container already exists; if not, create it
+    let container = document.querySelector(".data-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.className = "data-container";
+        document.body.append(container);
+    }
+
+    // Loop through the data and create cards for each item
+    for (const item of data) {
+        const card = document.createElement("div");
+        card.className = "data-card";
+
+        const mood = document.createElement("div");
+        mood.className = "data-mood";
+        mood.textContent = `Mood: ${item.mood}`;
+
+        const geo = document.createElement("div");
+        geo.className = "data-geo";
+        geo.textContent = `Location: ${item.lat}°, ${item.lon}°`;
+
+        const date = document.createElement("div");
+        date.className = "data-date";
+        date.textContent = `Date: ${new Date(item.timestamp).toLocaleString()}`;
+
+        card.append(mood, geo, date);
+        container.append(card); // Append to the existing container
+    }
+}
+
+document.addEventListener("DOMContentLoaded", getData);
+    </script>
+</body>
+</html>
